@@ -1,0 +1,7 @@
+build/
+devel/
+install/
+.vscode/
+__pycache__/
+*.pyc
+src/tcrlm/datasets/*.bag

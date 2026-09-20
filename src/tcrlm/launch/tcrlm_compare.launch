@@ -1,0 +1,35 @@
+<launch>
+  <arg name="bag_id" default="1"/>
+  <arg name="bag_dir" default="$(find tcrlm)/datasets"/>
+  <arg name="bag_file" default="$(eval {1: 'compare_bag1.bag', 2: 'compare_bag2.bag', 3: 'compare_bag3.bag', 4: 'compare_bag4.bag'}[arg('bag_id')])"/>
+  <arg name="bag_rate" default="1.0"/>
+  <arg name="bag_start" default="0.0"/>
+  <arg name="bag_delay" default="3.0"/>
+  <arg name="enable_terrain_change" default="false"/>
+  <arg name="raw_points_topic" default="/carla/sensor_mount/lidar/merged"/>
+  <arg name="params_file" default="$(find tcrlm)/config/tcrlm.yaml"/>
+  <arg name="tcr_params_file" default="$(find tcrlm)/config/tcr_construction.yaml"/>
+  <arg name="rviz_config" default="$(find tcrlm)/rviz/tcrlm.rviz"/>
+
+  <rosparam command="load" file="$(arg params_file)"/>
+  <rosparam command="load" file="$(arg tcr_params_file)"/>
+  <param name="use_sim_time" value="true"/>
+  <param name="tcrlm/enableTerrainChangeMaintenance" value="$(arg enable_terrain_change)"/>
+  <param name="tcrlm_tcr_construction/input_topic" value="$(arg raw_points_topic)"/>
+
+  <node pkg="tcrlm" type="tcrlm_tcr_construction"
+        name="tcrlm_tcr_construction" output="screen" required="true"/>
+  <node pkg="tcrlm" type="tcrlm_range_image_projection_and_deskew"
+        name="tcrlm_range_image_projection_and_deskew" output="screen" required="true"/>
+  <node pkg="tcrlm" type="tcrlm_feature_extraction"
+        name="tcrlm_feature_extraction" output="screen" required="true"/>
+  <node pkg="tcrlm" type="tcrlm_mapping"
+        name="tcrlm_mapping" output="screen" required="true"/>
+  <node if="$(arg enable_terrain_change)" pkg="tcrlm" type="tcrlm_terrain_change"
+        name="tcrlm_terrain_change" output="screen" required="true"/>
+  <node pkg="rviz" type="rviz" name="tcrlm_rviz"
+        args="-d &quot;$(arg rviz_config)&quot;" output="screen"/>
+
+  <node pkg="rosbag" type="play" name="tcrlm_compare_bag" output="screen"
+        args="--clock --delay=$(arg bag_delay) --rate=$(arg bag_rate) --start=$(arg bag_start) &quot;$(arg bag_dir)/$(arg bag_file)&quot;"/>
+</launch>

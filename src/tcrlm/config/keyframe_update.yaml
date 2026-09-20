@@ -1,0 +1,10 @@
+tcrlm:
+  surfThreshold: 0.01
+  featurePostProcessMaskBoundaryCols: 4
+  mappingProcessInterval: 0.15
+  terrainChangeHeightAxis: "-z"
+  terrainChangeDetectionMode: "excavation"
+  terrainChangeMinLayerTimeSeparation: 1.0
+  terrainChangeMinRegionArea: 1.0
+  terrainChangeRecentBand: 0.45
+  terrainChangeMaxVisualizationKeyframes: 0

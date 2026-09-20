@@ -1,0 +1,25 @@
+<launch>
+  <arg name="bag_dir" default="$(find tcrlm)/datasets"/>
+  <arg name="bag_file" default="gnss_lost_bag1.bag"/>
+  <arg name="bag_rate" default="1.0"/>
+  <arg name="bag_start" default="0.0"/>
+  <arg name="bag_delay" default="3.0"/>
+  <arg name="enable_terrain_change" default="false"/>
+  <arg name="raw_points_topic" default="/carla/sensor_mount/lidar/merged"/>
+  <arg name="params_file" default="$(find tcrlm)/config/tcrlm.yaml"/>
+  <arg name="tcr_params_file" default="$(find tcrlm)/config/tcr_construction.yaml"/>
+  <arg name="rviz_config" default="$(find tcrlm)/rviz/tcrlm.rviz"/>
+
+  <include file="$(find tcrlm)/launch/tcrlm_compare.launch">
+    <arg name="bag_dir" value="$(arg bag_dir)"/>
+    <arg name="bag_file" value="$(arg bag_file)"/>
+    <arg name="bag_rate" value="$(arg bag_rate)"/>
+    <arg name="bag_start" value="$(arg bag_start)"/>
+    <arg name="bag_delay" value="$(arg bag_delay)"/>
+    <arg name="enable_terrain_change" value="$(arg enable_terrain_change)"/>
+    <arg name="raw_points_topic" value="$(arg raw_points_topic)"/>
+    <arg name="params_file" value="$(arg params_file)"/>
+    <arg name="tcr_params_file" value="$(arg tcr_params_file)"/>
+    <arg name="rviz_config" value="$(arg rviz_config)"/>
+  </include>
+</launch>
